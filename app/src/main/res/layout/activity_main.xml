@@ -17,15 +17,22 @@
         android:id="@+id/add_button"
         android:layout_width="540px"
         android:layout_height="65dp"
-        android:text="Button"
+        android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myView"
-        app:layout_constraintVertical_bias="0.975"
-        tools:layout_editor_absoluteX="0dp" />
-    \\
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976" />
+        app:layout_constraintTop_toTopOf="@+id/myView"
+        app:layout_constraintVertical_bias="0.975" />
 
+    <Button
+        android:id="@+id/sbor_button"
+        android:layout_width="540px"
+        android:layout_height="65dp"
+        android:text="sbor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/myView"
+        app:layout_constraintVertical_bias="0.975" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
