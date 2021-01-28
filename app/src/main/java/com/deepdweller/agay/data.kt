@@ -8,5 +8,5 @@ object data {
     var gline:FloatArray = floatArrayOf(0f, 0.8f, 0f, 0f)
     var bline:FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
     var lline:FloatArray = floatArrayOf(0f, 0f, 0f, 0.8f)
-
+    var here = 0
 }

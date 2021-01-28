@@ -17,7 +17,7 @@ class MyCanvasView(context: Context, attributeSet: AttributeSet): View(context, 
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        extraBitmap = BitmapFactory.decodeResource(resources, R.drawable.rostki)
+        extraBitmap = BitmapFactory.decodeResource(resources, R.drawable.pole)
 
 //        extraCanvas.drawColor(backgroundColor)
 //        if (::extraBitmap.isInitialized) extraBitmap.recycle()
@@ -33,8 +33,8 @@ class MyCanvasView(context: Context, attributeSet: AttributeSet): View(context, 
         var mColorMatrix = ColorMatrix(cmData)
         var mfilter = ColorMatrixColorFilter(mColorMatrix)
         var paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.setStyle(Paint.Style.FILL_AND_STROKE)
-        paint.setColorFilter(mfilter)
+        /*paint.setStyle(Paint.Style.FILL_AND_STROKE)
+        paint.setColorFilter(mfilter)*/
         canvas.save()
         canvas.drawBitmap(extraBitmap, 0f, 0f, paint)
     }
