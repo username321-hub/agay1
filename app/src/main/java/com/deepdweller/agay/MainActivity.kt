@@ -1,127 +1,79 @@
 package com.deepdweller.agay
 
 import android.content.Intent
-import android.graphics.Color
-import android.opengl.Visibility
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.*
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.deepdweller.agay.data.gline
-import com.deepdweller.agay.data.here
 import com.deepdweller.agay.data.lline
 import com.deepdweller.agay.data.rline
-import java.lang.Thread.sleep
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class
 MainActivity : AppCompatActivity() {
-    lateinit var add:Button
-    lateinit var sbor:Button
-    lateinit var counter:TextView
-    lateinit var rostok1:ImageView
-    lateinit var rostok2:ImageView
-    lateinit var rostok3:ImageView
-    lateinit var rostok4:ImageView
-    lateinit var here2:Button
-    lateinit var here3:Button
-    lateinit var here4:Button
-    lateinit var here5:Button
-    lateinit var here6:Button
-    lateinit var here7:Button
-    lateinit var here8:Button
-    lateinit var here9:Button
-    lateinit var here10:Button
-    var intent1: Intent? = null
+    lateinit var buttonPlant: Button
+    lateinit var buttonSbor: Button
+    val animals = arrayOf("рожь", "овёс", "пшеница")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val myCanvasView : MyCanvasView = findViewById(R.id.myView)
-        here2 = findViewById(R.id.button2)
-        here3 = findViewById(R.id.button3)
-        here4 = findViewById(R.id.button4)
-        here5 = findViewById(R.id.button5)
-        here6 = findViewById(R.id.button6)
-        here7 = findViewById(R.id.button7)
-        here8 = findViewById(R.id.button8)
-        here9 = findViewById(R.id.button9)
-        here10 = findViewById(R.id.button10)
-        if (here==1){
-            here=0
-            here2.visibility = VISIBLE
-            here3.visibility = VISIBLE
-            here4.visibility = VISIBLE
-            here5.visibility = VISIBLE
-            here6.visibility = VISIBLE
-            here7.visibility = VISIBLE
-            here8.visibility = VISIBLE
-            here9.visibility = VISIBLE
-            here10.visibility = VISIBLE
-        }
+        val myCanvasView: ImageView = findViewById(R.id.myView)
         myCanvasView.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN
-        add=findViewById(R.id.add_button)
-        sbor = findViewById(R.id.sbor_button)
-        counter = findViewById(R.id.textView)
-        here2 = findViewById(R.id.button2)
-        here3 = findViewById(R.id.button3)
-        here4 = findViewById(R.id.button4)
-        here5 = findViewById(R.id.button5)
-        here6 = findViewById(R.id.button6)
-        here7 = findViewById(R.id.button7)
-        here8 = findViewById(R.id.button8)
-        here9 = findViewById(R.id.button9)
-        here10 = findViewById(R.id.button10)
-        intent1 = Intent(this, PlantActivity::class.java)
-       /* rostok1 = findViewById(R.id.imageView)
-        rostok2 = findViewById(R.id.imageView2)
-        rostok3 = findViewById(R.id.imageView3)
-        rostok4 = findViewById(R.id.imageView4)*/
+        buttonPlant = findViewById(R.id.add_button)
+        buttonSbor = findViewById(R.id.sbor_button)
 
-        var counterint = 0
-        fun lvlup(gline:FloatArray, lline:FloatArray, rline:FloatArray){
-            rline[0]+=0.05f
-            gline[1]+=0.05f
-            lline[3]+=0.05f
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose an animal")
+        var checkedItem = 1 // cow
+        builder.setSingleChoiceItems(animals, checkedItem) { dialog, which ->
+            checkedItem = which
         }
-        add.setOnClickListener {
-            startActivity(intent1)
+        builder.setPositiveButton("OK") { dialog, which ->
+            Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
         }
-       /* var count1 = 0
-        add.setOnClickListener{
-            count1++
-            if (count1==5){
-                rostok1.visibility = VISIBLE
-            }
-            if (count1==10){
-                rostok2.visibility = VISIBLE
-            }
-            if (count1==15){
-                rostok3.visibility = VISIBLE
-            }
-            if (count1==20){
-                rostok4.visibility = VISIBLE
-            }*/
-            counterint++
-            counter.text = counterint.toString()+"/20"
-            if (gline[1]<1.7f){
-                lvlup(gline, lline, rline)
-                myCanvasView.invalidate()
-            }else{
-                add.visibility = INVISIBLE
-                rline[0]=0f
-                gline[1]=1.6f
-                lline[3]=1.6f
+        builder.setNegativeButton("Cancel", null)
+
+        buttonPlant.setOnClickListener {
+            val dialog = builder.create()
+            dialog.show()
+        }
+        buttonSbor.setOnClickListener {
+
+        }
+        MainScope().launch{
+            for (i in 1..10) {
+                delay(1000)
+                var cmData: FloatArray = floatArrayOf(
+                    data.rline[0], data.rline[1], data.rline[2], data.rline[3], 0f,
+                    data.gline[0], data.gline[1], data.gline[2], data.gline[3], 0f,
+                    data.bline[0], data.bline[1], data.bline[2], data.bline[3], 0f,
+                    data.lline[0], data.lline[1], data.lline[2], data.lline[3], 0f
+                )
+                var mColorMatrix = ColorMatrix(cmData)
+                var mfilter = ColorMatrixColorFilter(mColorMatrix)
+                myCanvasView.setColorFilter(mfilter)
+                lvlup()
                 myCanvasView.invalidate()
             }
-            sbor.setOnClickListener {
-                counterint=0
-                counter.text = "0/20"
-                rline[0]=0.8f
-                gline[1]=0.8f
-                lline[3]=0.8f
-                add.visibility = VISIBLE
-                myCanvasView.invalidate()
-            }
+        }
+    }
+
+    fun lvlup() {
+
+
+        rline[0] += 0.05f
+        gline[1] += 0.05f
+        lline[3] += 0.05f
     }
 }
