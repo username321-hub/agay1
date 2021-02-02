@@ -49,10 +49,9 @@ MainActivity : AppCompatActivity() {
             dialog.show()
         }
         buttonSbor.setOnClickListener {
-
         }
         MainScope().launch{
-            for (i in 1..10) {
+            for (i in 1..20) {
                 delay(1000)
                 var cmData: FloatArray = floatArrayOf(
                     data.rline[0], data.rline[1], data.rline[2], data.rline[3], 0f,
@@ -66,11 +65,22 @@ MainActivity : AppCompatActivity() {
                 lvlup()
                 myCanvasView.invalidate()
             }
+            /*data.rline[1] = 1.5f
+            var cmData: FloatArray = floatArrayOf(
+                data.rline[0], data.rline[1], data.rline[2], data.rline[3], 0f,
+                data.gline[0], data.gline[1], data.gline[2], data.gline[3], 0f,
+                data.bline[0], data.bline[1], data.bline[2], data.bline[3], 0f,
+                data.lline[0], data.lline[1], data.lline[2], data.lline[3], 0f
+            )
+            var mColorMatrix = ColorMatrix(cmData)
+            var mfilter = ColorMatrixColorFilter(mColorMatrix)
+            myCanvasView.setColorFilter(mfilter)
+            myCanvasView.invalidate()*/
         }
     }
 
     fun lvlup() {
-        rline[0] += 0.05f
+        rline[1] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f
     }
