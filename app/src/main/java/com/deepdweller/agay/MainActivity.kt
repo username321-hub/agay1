@@ -9,21 +9,32 @@ import android.os.Bundle
 import android.view.View.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.deepdweller.agay.History.plantHistory
 import com.deepdweller.agay.data.gline
 import com.deepdweller.agay.data.lline
 import com.deepdweller.agay.data.rline
+import com.deepdweller.agay.data.sequences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 class
 MainActivity : AppCompatActivity() {
     lateinit var buttonPlant: Button
     lateinit var buttonSbor: Button
-    val animals = arrayOf("рожь", "овёс", "пшеница")
+    lateinit var year:TextView
+    lateinit var history:TextView
+
+    val plants = arrayOf("Рожь", "Овёс", "Пшеница")
+    val previous = "Пшеница"
+    var counter = 0
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +43,22 @@ MainActivity : AppCompatActivity() {
         myCanvasView.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN
         buttonPlant = findViewById(R.id.add_button)
         buttonSbor = findViewById(R.id.sbor_button)
+        year = findViewById(R.id.textView)
+        history = findViewById(R.id.history)
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Выберите растение")
         var checkedItem = 1 // cow
-        builder.setSingleChoiceItems(animals, checkedItem) { dialog, which ->
+        builder.setSingleChoiceItems(plants, checkedItem) { dialog, which ->
             checkedItem = which
         }
         builder.setPositiveButton("OK") { dialog, which ->
             Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
+            var checkedItemCulture = Culture(checkedItem.toString())
+            counter++
+            year.text = counter.toString() + "/5"
+            plantHistory+=checkedItemCulture
+            history.text = plantHistory.toString()
         }
         builder.setNegativeButton("Cancel", null)
 
@@ -52,7 +70,7 @@ MainActivity : AppCompatActivity() {
         }
         MainScope().launch{
             for (i in 1..20) {
-                delay(1000)
+                delay(800)
                 var cmData: FloatArray = floatArrayOf(
                     data.rline[0], data.rline[1], data.rline[2], data.rline[3], 0f,
                     data.gline[0], data.gline[1], data.gline[2], data.gline[3], 0f,
