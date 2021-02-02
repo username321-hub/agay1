@@ -34,8 +34,12 @@ MainActivity : AppCompatActivity() {
     val previous = "Пшеница"
     var counter = 0
 
-
-
+    fun toCulture(checkedItem:Int):Culture{
+        return data.cultures[checkedItem]
+    }
+    /*fun toStringCulture(checkedItem:Int):String{
+        return data.cultures[checkedItem].toString()
+    }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,16 +52,15 @@ MainActivity : AppCompatActivity() {
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Выберите растение")
-        var checkedItem = 1 // cow
+        var checkedItem = 1
         builder.setSingleChoiceItems(plants, checkedItem) { dialog, which ->
             checkedItem = which
         }
         builder.setPositiveButton("OK") { dialog, which ->
             Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
-            var checkedItemCulture = Culture(checkedItem.toString())
+            plantHistory.plusAssign(toCulture(checkedItem))
             counter++
             year.text = counter.toString() + "/5"
-            plantHistory+=checkedItemCulture
             history.text = plantHistory.toString()
         }
         builder.setNegativeButton("Cancel", null)

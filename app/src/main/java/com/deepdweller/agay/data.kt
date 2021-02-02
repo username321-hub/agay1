@@ -1,5 +1,7 @@
 package com.deepdweller.agay
 
+import com.deepdweller.agay.data.cultures
+
 object data {
     var r = 127
     var g = 127
@@ -10,9 +12,8 @@ object data {
     var lline:FloatArray = floatArrayOf(0f, 0f, 0f, 0.4f)
     val cultures:List<Culture> = listOf(
         Culture("Рожь"),
-        Culture("Пшеница"),
         Culture("Овёс"),
-        Culture("Ячмень")
+        Culture("Пшеница")
         )
     var sequences:List<Sequence> = listOf(
         Sequence(cultures.first { culture -> culture.name.equals("Пшеница") }, cultures.first { culture -> culture.name.equals("Овёс")}, Rate.BAD),
@@ -32,8 +33,9 @@ enum class Rate{
 
 object CheckGood {
     private val positiveMap = mutableMapOf<Culture, List<Culture>>(
-        data.cultures[0] to listOf(data.cultures[1], data.cultures[3]),
-        data.cultures[1] to listOf(data.cultures[0], data.cultures[3])
+        data.cultures[0] to listOf(cultures[1], cultures[2]),
+        data.cultures[1] to listOf(cultures[0], cultures[2]),
+        data.cultures[2] to listOf(cultures[1], cultures[0])
     )
 
     fun c(prev : Culture, next : Culture) : Rate{
@@ -43,8 +45,9 @@ object CheckGood {
         else
             return  Rate.BAD
     }
+
 }
 
 object History{
-    var plantHistory:List<Culture> = listOf()
+    var plantHistory:MutableList<Culture> = mutableListOf()
 }
