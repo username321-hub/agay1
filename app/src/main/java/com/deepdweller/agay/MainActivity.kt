@@ -34,7 +34,7 @@ MainActivity : AppCompatActivity() {
         buttonSbor = findViewById(R.id.sbor_button)
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose an animal")
+        builder.setTitle("Выберите растение")
         var checkedItem = 1 // cow
         builder.setSingleChoiceItems(animals, checkedItem) { dialog, which ->
             checkedItem = which
@@ -70,8 +70,6 @@ MainActivity : AppCompatActivity() {
     }
 
     fun lvlup() {
-
-
         rline[0] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f

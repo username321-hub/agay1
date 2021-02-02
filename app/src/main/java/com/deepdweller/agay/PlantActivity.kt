@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.deepdweller.agay.data.here
 
 class PlantActivity : AppCompatActivity() {
     lateinit var back:Button
@@ -16,7 +15,6 @@ class PlantActivity : AppCompatActivity() {
         intent2 = Intent(this, MainActivity::class.java)
         back.setOnClickListener {
             startActivity(intent2)
-            here=1
         }
     }
 }
