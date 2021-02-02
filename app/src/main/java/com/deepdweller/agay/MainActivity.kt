@@ -58,7 +58,7 @@ MainActivity : AppCompatActivity() {
         }
         builder.setPositiveButton("OK") { dialog, which ->
             Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
-            plantHistory.plusAssign(toCulture(checkedItem))
+            plantHistory.add(toCulture(checkedItem))
             counter++
             year.text = counter.toString() + "/5"
             history.text = plantHistory.toString()
