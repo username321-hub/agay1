@@ -31,7 +31,7 @@ enum class Rate{
     GOOD, MIDDLE, BAD
 }
 
-object CheckGood {
+/*object CheckGood {
     private val positiveMap = mutableMapOf<Culture, List<Culture>>(
         data.cultures[0] to listOf(cultures[1], cultures[2]),
         data.cultures[1] to listOf(cultures[0], cultures[2]),
@@ -46,8 +46,9 @@ object CheckGood {
             return  Rate.BAD
     }
 
-}
+}*/
 
 object History{
     var plantHistory:MutableList<Culture> = mutableListOf()
+    var plantHistoryString:MutableList<String> = mutableListOf()
 }

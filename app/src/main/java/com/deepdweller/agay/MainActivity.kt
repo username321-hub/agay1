@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.deepdweller.agay.History.plantHistory
+import com.deepdweller.agay.History.plantHistoryString
 import com.deepdweller.agay.data.gline
 import com.deepdweller.agay.data.lline
 import com.deepdweller.agay.data.rline
@@ -22,9 +23,23 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
+/*object CheckGood {
+    private val positiveMap = mutableMapOf<Culture, List<Culture>>(
+        data.cultures[0] to listOf(data.cultures[1], data.cultures[2]),
+        data.cultures[1] to listOf(data.cultures[0], data.cultures[2]),
+        data.cultures[2] to listOf(data.cultures[1], data.cultures[0])
+    )
 
-class
-MainActivity : AppCompatActivity() {
+    fun c(prev : Culture, next : Culture) : Rate{
+        val isGoodNext = positiveMap[prev]?.contains(next) ?: false
+        if (isGoodNext)
+            return  Rate.GOOD
+        else
+            return  Rate.BAD
+    }
+}*/
+
+class MainActivity : AppCompatActivity() {
     lateinit var buttonPlant: Button
     lateinit var buttonSbor: Button
     lateinit var year:TextView
@@ -34,12 +49,41 @@ MainActivity : AppCompatActivity() {
     val previous = "Пшеница"
     var counter = 0
 
+    private val positiveMap = mutableMapOf<Culture, List<Culture>>(
+        data.cultures[0] to listOf(data.cultures[1], data.cultures[2]),
+        data.cultures[1] to listOf(data.cultures[0], data.cultures[2]),
+        data.cultures[2] to listOf(data.cultures[1], data.cultures[0])
+    )
+
+    fun c(prev : Culture, next : Culture) : Rate{
+        val isGoodNext = positiveMap[prev]?.contains(next) ?: false
+        if (isGoodNext)
+            return  Rate.GOOD
+        else
+            return  Rate.BAD
+    }
     fun toCulture(checkedItem:Int):Culture{
         return data.cultures[checkedItem]
     }
-    /*fun toStringCulture(checkedItem:Int):String{
-        return data.cultures[checkedItem].toString()
-    }*/
+    fun toStringCulture(checkedItem: Int):String{
+        return plants[checkedItem]
+    }
+    fun toRate(score:MutableList<String>):MutableList<Rate>{
+        var rateList:MutableList<Rate> = mutableListOf()
+        for (i in 0..5){
+            if (score[i]=="BAD"){rateList.add(Rate.BAD)}
+            if (score[i]=="MIDDLE"){rateList.add(Rate.MIDDLE)}
+            if (score[i]=="GOOD"){rateList.add(Rate.GOOD)}
+        }
+        return rateList
+    }
+    fun rateToInt(rate: Rate):Int{
+        if (rate==Rate.BAD){return 0}
+        if (rate==Rate.MIDDLE){return 1}
+        if (rate==Rate.GOOD){return 2}
+        else
+            return -1
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,12 +100,27 @@ MainActivity : AppCompatActivity() {
         builder.setSingleChoiceItems(plants, checkedItem) { dialog, which ->
             checkedItem = which
         }
+        if (counter==6){
+            var score:MutableList<String> = mutableListOf()
+            plantHistoryString.clear()
+            for (i in 0..5){
+                plantHistoryString.add(c(plantHistory[i], plantHistory[i+1]).toString())
+                score.add(c(plantHistory[i], plantHistory[i+1]).toString())
+            }
+            history.text = plantHistoryString.toString()
+            var a = toRate(score)
+            for (i in 0..5){
+                rateToInt(a[i])
+            }
+        }
         builder.setPositiveButton("OK") { dialog, which ->
             Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
             plantHistory.add(toCulture(checkedItem))
+            plantHistoryString.add(toStringCulture(checkedItem))
             counter++
-            year.text = counter.toString() + "/5"
-            history.text = plantHistory.toString()
+            year.text = counter.toString() + "/6"
+            history.text = plantHistoryString.toString()
+            plantHistory[checkedItem]
         }
         builder.setNegativeButton("Cancel", null)
 
