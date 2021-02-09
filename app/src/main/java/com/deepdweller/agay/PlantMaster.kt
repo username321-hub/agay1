@@ -17,5 +17,8 @@ class PlantMaster {
 }
 
 enum class Rate{
-    GOOD, MIDDLE, BAD
+    GOOD,
+    MIDDLE,
+    BAD
+
 }

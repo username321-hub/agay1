@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     val buttonPlant:Button by lazy{findViewById(R.id.add_button) }
     val buttonSbor:Button by lazy{findViewById(R.id.sbor_button)}
     val year:TextView by lazy{findViewById(R.id.textView)}
-    val history:Button by lazy{findViewById(R.id.history)}
+    val history:TextView by lazy{findViewById(R.id.history)}
     val scoreTextView:TextView by lazy{findViewById(R.id.score)}
 
     fun toCulture(checkedItem:Int):Culture{
@@ -83,19 +83,25 @@ class MainActivity : AppCompatActivity() {
             checkedItem = which
         }
 
-        if (counter==6){
-            scoreTextView.visibility = VISIBLE
-/*            scoreTextView.text = rateToInt(score)*/
-            history.text = plantHistoryString.toString()
-            scoreAdd()
-            scoreTextView.text = score.toString()
-        }
         builder.setPositiveButton("OK") { dialog, which ->
             Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
             plantHistoryString.add(toStringCulture(checkedItem))
             counter++
+            if (counter==6){
+                plantHistoryString.clear()
+                scoreTextView.visibility = VISIBLE
+/*            scoreTextView.text = rateToInt(score)*/
+                history.text = plantHistoryString.toString()
+                scoreAdd()
+                for (i in score){
+                    history.text = history.text.toString() + i.toString()
+                }
+            }
+            else{
+                history.text = plantHistoryString.toString()
+            }
             year.text = counter.toString() + "/6"
-            history.text = plantHistoryString.toString()
+
             plantHistory.add(cultures[checkedItem])
         }
         builder.setNegativeButton("Cancel", null)
