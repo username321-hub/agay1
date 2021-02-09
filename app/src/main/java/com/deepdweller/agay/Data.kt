@@ -1,35 +1,29 @@
 package com.deepdweller.agay
 
-import com.deepdweller.agay.data.cultures
+object Data {
+    val plants = arrayOf("Рожь", "Овёс", "Пшеница")
 
-object data {
-    var r = 127
-    var g = 127
-    var b = 127
+    var counter = 0
+
+    var score:MutableList<Rate> = mutableListOf()
+
+
+
     var rline:FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
     var gline:FloatArray = floatArrayOf(0f, 0.4f, 0f, 0f)
     var bline:FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
     var lline:FloatArray = floatArrayOf(0f, 0f, 0f, 0.4f)
+
+
     val cultures:List<Culture> = listOf(
         Culture("Рожь"),
         Culture("Овёс"),
         Culture("Пшеница")
-        )
-    var sequences:List<Sequence> = listOf(
-        Sequence(cultures.first { culture -> culture.name.equals("Пшеница") }, cultures.first { culture -> culture.name.equals("Овёс")}, Rate.BAD),
-        Sequence(cultures.first { culture -> culture.name.equals("Пшеница") }, cultures.first { culture -> culture.name.equals("Пшеница")}, Rate.MIDDLE),
-        Sequence(cultures.first { culture -> culture.name.equals("Пшеница") }, cultures.first { culture -> culture.name.equals("Рожь")}, Rate.GOOD)
     )
 
-    class Sequence(val previous:Culture, val next:Culture, val rate:Rate){}
-
-
-
 }
 
-enum class Rate{
-    GOOD, MIDDLE, BAD
-}
+
 
 /*object CheckGood {
     private val positiveMap = mutableMapOf<Culture, List<Culture>>(

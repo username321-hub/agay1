@@ -6,10 +6,10 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import com.deepdweller.agay.data.bline
-import com.deepdweller.agay.data.gline
-import com.deepdweller.agay.data.lline
-import com.deepdweller.agay.data.rline
+import com.deepdweller.agay.Data.bline
+import com.deepdweller.agay.Data.gline
+import com.deepdweller.agay.Data.lline
+import com.deepdweller.agay.Data.rline
 
 class MyCanvasView(context: Context, attributeSet: AttributeSet): View(context, attributeSet) {
     private lateinit var extraBitmap: Bitmap
