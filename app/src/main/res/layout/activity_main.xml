@@ -66,20 +66,19 @@
         android:layout_marginLeft="80dp"
         android:layout_marginTop="136dp"
         android:background="#000000"
-        android:text="TextView"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myView" />
 
     <TextView
-        android:visibility="invisible"
         android:id="@+id/score"
         android:layout_width="166dp"
         android:layout_height="66dp"
         android:layout_marginStart="120dp"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="0/6"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myView" />
 

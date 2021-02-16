@@ -1,5 +1,7 @@
 package com.deepdweller.agay
 
+import android.graphics.Color
+import android.graphics.Color.GRAY
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import androidx.appcompat.app.AppCompatActivity
@@ -11,63 +13,34 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.deepdweller.agay.History.plantHistory
-import com.deepdweller.agay.History.plantHistoryString
 import com.deepdweller.agay.Data.counter
 import com.deepdweller.agay.Data.cultures
 import com.deepdweller.agay.Data.gline
+import com.deepdweller.agay.Data.initFilter
 import com.deepdweller.agay.Data.lline
 import com.deepdweller.agay.Data.plants
 import com.deepdweller.agay.Data.rline
-import com.deepdweller.agay.Data.score
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
-
-/*object CheckGood {
-    private val positiveMap = mutableMapOf<Culture, List<Culture>>(
-        data.cultures[0] to listOf(data.cultures[1], data.cultures[2]),
-        data.cultures[1] to listOf(data.cultures[0], data.cultures[2]),
-        data.cultures[2] to listOf(data.cultures[1], data.cultures[0])
-    )
-
-    fun c(prev : Culture, next : Culture) : Rate{
-        val isGoodNext = positiveMap[prev]?.contains(next) ?: false
-        if (isGoodNext)
-            return  Rate.GOOD
-        else
-            return  Rate.BAD
-    }
-}*/
 
 class MainActivity : AppCompatActivity() {
+    val PLANS_COUNT_FOR_FINISH = 6
 
     val plantMaster = PlantMaster()
 
-    val buttonPlant:Button by lazy{findViewById(R.id.add_button) }
-    val buttonSbor:Button by lazy{findViewById(R.id.sbor_button)}
-    val year:TextView by lazy{findViewById(R.id.textView)}
-    val history:TextView by lazy{findViewById(R.id.history)}
-    val scoreTextView:TextView by lazy{findViewById(R.id.score)}
+    val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
+    val buttonSbor: Button by lazy { findViewById(R.id.sbor_button) }
+    val year: TextView by lazy { findViewById(R.id.textView) }
+    val history: TextView by lazy { findViewById(R.id.history) }
 
-    fun toCulture(checkedItem:Int):Culture{
-        return Data.cultures[checkedItem]
-    }
-    fun toStringCulture(checkedItem: Int):String{
-        return plants[checkedItem]
-    }
-    fun scoreAdd(){
-        for (i in 0..plantHistory.size-2){
-            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i+1]))
+    fun calculateScore() : MutableList<Int>{
+        val score = mutableListOf<Int>()
+        for (i in 0..plantHistory.size - 2) {
+            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
         }
+        return score
     }
-
-/*    fun rateToInt(rate: MutableList<Rate>):Int{
-        for (i in 0..5){
-            if (rate[i]==Rate.BAD){}
-            if (rate[i]==Rate.GOOD){}
-        }
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,25 +57,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         builder.setPositiveButton("OK") { dialog, which ->
-            Toast.makeText(applicationContext, checkedItem.toString(), Toast.LENGTH_LONG).show()
-            plantHistoryString.add(toStringCulture(checkedItem))
-            counter++
-            if (counter==6){
-                plantHistoryString.clear()
-                scoreTextView.visibility = VISIBLE
-/*            scoreTextView.text = rateToInt(score)*/
-                history.text = plantHistoryString.toString()
-                scoreAdd()
-                for (i in score){
-                    history.text = history.text.toString() + i.toString()
-                }
+            if (plantMaster.isPlanted==true){
+                Toast.makeText(applicationContext, "Поле уже засажено", Toast.LENGTH_SHORT).show()
             }
             else{
-                history.text = plantHistoryString.toString()
-            }
-            year.text = counter.toString() + "/6"
+                plantMaster.isPlanted = true
+                plantMaster.isCanSbor = false
+                so(myCanvasView)
+                if (counter == PLANS_COUNT_FOR_FINISH)
+                {
+                    counter=0
+                    history.text =  calculateScore().toString()
+                }
+                plantHistory.add(cultures[checkedItem])
+                counter++
 
-            plantHistory.add(cultures[checkedItem])
+                if (counter == PLANS_COUNT_FOR_FINISH)
+                {
+                    counter=0
+                    history.text =  calculateScore().toString()
+                }
+                year.text = counter.toString() + "/$PLANS_COUNT_FOR_FINISH"
+            }
         }
         builder.setNegativeButton("Cancel", null)
 
@@ -111,15 +87,24 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
         buttonSbor.setOnClickListener {
+            if (plantMaster.isCanSbor) {
+                plantMaster.isPlanted = false
+                initFilter()
+                myCanvasView.invalidate()
+            }
         }
-        MainScope().launch{
-            for (i in 1..20) {
+        so(myCanvasView)
+    }
+
+    private fun so(myCanvasView: ImageView) {
+        MainScope().launch {
+            for (i in 1..10) {
                 delay(800)
                 var cmData: FloatArray = floatArrayOf(
-                    Data.rline[0], Data.rline[1], Data.rline[2], Data.rline[3], 0f,
-                    Data.gline[0], Data.gline[1], Data.gline[2], Data.gline[3], 0f,
+                    rline[0], rline[1], rline[2], rline[3], 0f,
+                    gline[0], gline[1], gline[2], gline[3], 0f,
                     Data.bline[0], Data.bline[1], Data.bline[2], Data.bline[3], 0f,
-                    Data.lline[0], Data.lline[1], Data.lline[2], Data.lline[3], 0f
+                    lline[0], lline[1], lline[2], lline[3], 0f
                 )
                 var mColorMatrix = ColorMatrix(cmData)
                 var mfilter = ColorMatrixColorFilter(mColorMatrix)
@@ -127,17 +112,7 @@ class MainActivity : AppCompatActivity() {
                 lvlup()
                 myCanvasView.invalidate()
             }
-            /*data.rline[1] = 1.5f
-            var cmData: FloatArray = floatArrayOf(
-                data.rline[0], data.rline[1], data.rline[2], data.rline[3], 0f,
-                data.gline[0], data.gline[1], data.gline[2], data.gline[3], 0f,
-                data.bline[0], data.bline[1], data.bline[2], data.bline[3], 0f,
-                data.lline[0], data.lline[1], data.lline[2], data.lline[3], 0f
-            )
-            var mColorMatrix = ColorMatrix(cmData)
-            var mfilter = ColorMatrixColorFilter(mColorMatrix)
-            myCanvasView.setColorFilter(mfilter)
-            myCanvasView.invalidate()*/
+            plantMaster.isCanSbor = true
         }
     }
 

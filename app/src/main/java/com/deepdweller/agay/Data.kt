@@ -1,28 +1,35 @@
 package com.deepdweller.agay
 
 object Data {
-    val plants = arrayOf("Рожь", "Овёс", "Пшеница")
+    val plants = arrayOf("Рожь", "Овёс", "Пшеница", "Гречиха", "Просо")
 
     var counter = 0
 
-    var score:MutableList<Rate> = mutableListOf()
+    lateinit var rline: FloatArray
+    lateinit var gline: FloatArray
+    lateinit var bline: FloatArray
+    lateinit var lline: FloatArray
 
+    init {
+        initFilter()
+    }
 
+    fun initFilter() {
+        rline = floatArrayOf(0f, 0f, 0f, 0f)
+        gline = floatArrayOf(0f, 0.4f, 0f, 0f)
+        bline = floatArrayOf(0f, 0f, 0f, 0f)
+        lline = floatArrayOf(0f, 0f, 0f, 0.4f)
+    }
 
-    var rline:FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
-    var gline:FloatArray = floatArrayOf(0f, 0.4f, 0f, 0f)
-    var bline:FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
-    var lline:FloatArray = floatArrayOf(0f, 0f, 0f, 0.4f)
-
-
-    val cultures:List<Culture> = listOf(
+    val cultures: List<Culture> = listOf(
         Culture("Рожь"),
         Culture("Овёс"),
-        Culture("Пшеница")
+        Culture("Пшеница"),
+        Culture("Гречиха"),
+        Culture("Просо")
     )
 
 }
-
 
 
 /*object CheckGood {
@@ -42,7 +49,6 @@ object Data {
 
 }*/
 
-object History{
-    var plantHistory:MutableList<Culture> = mutableListOf()
-    var plantHistoryString:MutableList<String> = mutableListOf()
+object History {
+    var plantHistory: MutableList<Culture> = mutableListOf()
 }
