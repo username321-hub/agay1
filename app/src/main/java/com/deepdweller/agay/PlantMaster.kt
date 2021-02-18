@@ -25,7 +25,6 @@ class PlantMaster {
 }
 
 enum class Rate{
-    GOOD,
-    //MIDDLE,
-    BAD
+    RIGHT,
+    WRONG
 }

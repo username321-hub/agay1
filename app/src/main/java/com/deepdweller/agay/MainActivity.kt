@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Color.GRAY
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.*
@@ -20,15 +21,18 @@ import com.deepdweller.agay.Data.initFilter
 import com.deepdweller.agay.Data.lline
 import com.deepdweller.agay.Data.plants
 import com.deepdweller.agay.Data.rline
+import com.deepdweller.agay.Eventik.event
+import com.deepdweller.agay.Eventik.instruments
+import com.deepdweller.agay.Eventik.instrumentsString
+import com.deepdweller.agay.Eventik.solutions
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    val PLANS_COUNT_FOR_FINISH = 6
+    val PLANS_COUNT_FOR_FINISH = 2
 
     val plantMaster = PlantMaster()
-
     val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
     val buttonSbor: Button by lazy { findViewById(R.id.sbor_button) }
     val year: TextView by lazy { findViewById(R.id.textView) }
@@ -37,8 +41,9 @@ class MainActivity : AppCompatActivity() {
     fun calculateScore() : MutableList<Int>{
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
-            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
+            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i+1]))
         }
+        plantHistory.clear()
         return score
     }
 
@@ -64,18 +69,13 @@ class MainActivity : AppCompatActivity() {
                 plantMaster.isPlanted = true
                 plantMaster.isCanSbor = false
                 so(myCanvasView)
-                if (counter == PLANS_COUNT_FOR_FINISH)
-                {
-                    counter=0
-                    history.text =  calculateScore().toString()
-                }
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
                 if (counter == PLANS_COUNT_FOR_FINISH)
                 {
-                    counter=0
-                    history.text =  calculateScore().toString()
+                    dialogEvent(builder, checkedItem)
+                    history.text = calculateScore().toString()
                 }
                 year.text = counter.toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
     private fun so(myCanvasView: ImageView) {
         MainScope().launch {
             for (i in 1..10) {
-                delay(800)
+                delay(500)
                 var cmData: FloatArray = floatArrayOf(
                     rline[0], rline[1], rline[2], rline[3], 0f,
                     gline[0], gline[1], gline[2], gline[3], 0f,
@@ -116,9 +116,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun toSolution(tool:String):Instrument{
+        var tool = Instrument(tool)
+        return tool
+    }
+/*    fun fixEvent(event:Event, tool:Instrument){
+        var printvar = ""
+        for(i in 0..event.solutions.size-1){
+            if (tool.name in event.solutions[i].name)
+                printvar = "right"
+            println(printvar)
+            break
+        }
+        if (printvar!="right"){
+            println("wrong")
+        }
+    }*/
+    fun toRate(checkedItem: Int) {
+        var rate = "WRONG"
+        for (i in 0 until solutions.size) {
+            if (instruments[checkedItem].name == solutions[i].name)
+                rate = "RIGHT"
+                break
+        }
+        Toast.makeText(applicationContext, rate, Toast.LENGTH_SHORT).show()
+    }
     fun lvlup() {
         rline[1] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f
+    }
+    fun dialogEvent(builder:AlertDialog.Builder, checkedItem1: Int){
+        var checkedItem = checkedItem1
+        builder.setTitle(event.eventText+" Выбери инструмент!")
+        builder.setSingleChoiceItems(instrumentsString, checkedItem) { dialog, which ->
+            checkedItem=which
+        }
+        builder.setPositiveButton("OK") { dialog, which ->
+            toRate(checkedItem)
+        }
+        builder.setNegativeButton("Cancel", null)
+        counter=0
     }
 }

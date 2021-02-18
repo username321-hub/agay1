@@ -52,3 +52,25 @@ object Data {
 object History {
     var plantHistory: MutableList<Culture> = mutableListOf()
 }
+object Eventik{
+    val solutions:Array<Instrument> = arrayOf(
+        Instrument("Плуг"),
+        Instrument("Культиватор"),
+        Instrument("Катки")
+        )
+    var instruments:MutableList<Instrument> = mutableListOf(
+        Instrument("Плуг"),
+        Instrument("Борона"),
+        Instrument("Лущильник"),
+        Instrument("Культиватор"),
+        Instrument("Катки")
+    )
+    var instrumentsString:Array<String> = arrayOf(
+        "Плуг",
+        "Борона",
+        "Лущильник",
+        "Культиватор",
+        "Катки"
+    )
+    val event = Event("Сорняки!", solutions)
+}
