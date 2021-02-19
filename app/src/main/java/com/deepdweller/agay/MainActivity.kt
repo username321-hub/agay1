@@ -1,19 +1,15 @@
 package com.deepdweller.agay
 
-import android.graphics.Color
-import android.graphics.Color.GRAY
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.*
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.deepdweller.agay.History.plantHistory
+import androidx.appcompat.app.AppCompatActivity
 import com.deepdweller.agay.Data.counter
 import com.deepdweller.agay.Data.cultures
 import com.deepdweller.agay.Data.gline
@@ -25,6 +21,7 @@ import com.deepdweller.agay.Eventik.event
 import com.deepdweller.agay.Eventik.instruments
 import com.deepdweller.agay.Eventik.instrumentsString
 import com.deepdweller.agay.Eventik.solutions
+import com.deepdweller.agay.History.plantHistory
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,14 +31,14 @@ class MainActivity : AppCompatActivity() {
 
     val plantMaster = PlantMaster()
     val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
-    val buttonSbor: Button by lazy { findViewById(R.id.sbor_button) }
+    val buttonHarvest: Button by lazy { findViewById(R.id.sbor_button) }
     val year: TextView by lazy { findViewById(R.id.textView) }
     val history: TextView by lazy { findViewById(R.id.history) }
 
-    fun calculateScore() : MutableList<Int>{
+    fun calculateScore(): MutableList<Int> {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
-            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i+1]))
+            score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
         }
         plantHistory.clear()
         return score
@@ -65,15 +62,14 @@ class MainActivity : AppCompatActivity() {
             if (plantMaster.isPlanted==true){
                 Toast.makeText(applicationContext, "Поле уже засажено", Toast.LENGTH_SHORT).show()
             }
-            else{
+            else {
                 plantMaster.isPlanted = true
-                plantMaster.isCanSbor = false
-                so(myCanvasView)
+                plantMaster.isCanHarvest = false
+                draw(myCanvasView)
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
-                if (counter == PLANS_COUNT_FOR_FINISH)
-                {
+                if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
                     history.text = calculateScore().toString()
                 }
@@ -86,17 +82,17 @@ class MainActivity : AppCompatActivity() {
             val dialog = builder.create()
             dialog.show()
         }
-        buttonSbor.setOnClickListener {
-            if (plantMaster.isCanSbor) {
+        buttonHarvest.setOnClickListener {
+            if (plantMaster.isCanHarvest) {
                 plantMaster.isPlanted = false
                 initFilter()
                 myCanvasView.invalidate()
             }
         }
-        so(myCanvasView)
+        draw(myCanvasView)
     }
 
-    private fun so(myCanvasView: ImageView) {
+    private fun draw(myCanvasView: ImageView) {
         MainScope().launch {
             for (i in 1..10) {
                 delay(500)
@@ -112,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 lvlup()
                 myCanvasView.invalidate()
             }
-            plantMaster.isCanSbor = true
+            plantMaster.isCanHarvest = true
         }
     }
 

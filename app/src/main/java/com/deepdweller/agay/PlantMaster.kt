@@ -4,7 +4,7 @@ class Culture(val name: String){}
 
 class PlantMaster {
     var isPlanted = false
-    var isCanSbor = false
+    var isCanHarvest = false
     private val positiveMap = mutableMapOf<Culture, List<Culture>>(
         Data.cultures[0] to listOf(Data.cultures[1], Data.cultures[2]),
         Data.cultures[1] to listOf(Data.cultures[0], Data.cultures[2]),
