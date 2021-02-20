@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 plantMaster.isPlanted = true
                 plantMaster.isCanHarvest = false
-                //draw(myCanvasView)
+                draw(myCanvasView)
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 var mColorMatrix = ColorMatrix(cmData)
                 var mfilter = ColorMatrixColorFilter(mColorMatrix)
                 myCanvasView.colorFilter = mfilter
-                lvlup()
+                //lvlup()
                 myCanvasView.invalidate()
             }
             plantMaster.isCanHarvest = true
