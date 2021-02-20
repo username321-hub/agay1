@@ -7,15 +7,6 @@
     android:background="@drawable/pole"
     tools:context=".MainActivity">
 
-    <ExpandableListView
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:src="@drawable/pole"
         android:scaleType="centerCrop"
@@ -25,6 +16,15 @@
         android:visibility="visible"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
+
+    <ExpandableListView
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_button"

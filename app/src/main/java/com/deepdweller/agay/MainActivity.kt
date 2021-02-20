@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 var mColorMatrix = ColorMatrix(cmData)
                 var mfilter = ColorMatrixColorFilter(mColorMatrix)
                 myCanvasView.colorFilter = mfilter
-                //lvlup()
+                lvlup()
                 myCanvasView.invalidate()
             }
             plantMaster.isCanHarvest = true
