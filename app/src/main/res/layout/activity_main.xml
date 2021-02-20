@@ -7,6 +7,15 @@
     android:background="@drawable/pole"
     tools:context=".MainActivity">
 
+    <ExpandableListView
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:src="@drawable/pole"
         android:scaleType="centerCrop"
@@ -49,9 +58,9 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginLeft="176dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginLeft="184dp"
+        android:layout_marginTop="356dp"
         android:background="#000000"
         android:text="TextView"
         android:textColor="#FFFFFF"
@@ -67,18 +76,6 @@
         android:layout_marginTop="136dp"
         android:background="#000000"
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myView" />
-
-    <TextView
-        android:id="@+id/score"
-        android:layout_width="166dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="16dp"
-        android:text="0/6"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myView" />
 

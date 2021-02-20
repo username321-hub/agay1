@@ -1,15 +1,19 @@
 package com.deepdweller.agay
 
+import android.content.Context
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatDrawableManager.get
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.deepdweller.agay.Data.counter
 import com.deepdweller.agay.Data.cultures
 import com.deepdweller.agay.Data.gline
@@ -22,6 +26,7 @@ import com.deepdweller.agay.Eventik.instruments
 import com.deepdweller.agay.Eventik.instrumentsString
 import com.deepdweller.agay.Eventik.solutions
 import com.deepdweller.agay.History.plantHistory
+import com.deepdweller.agay.adapter.ProfileExpandableListAdapter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     val PLANS_COUNT_FOR_FINISH = 2
 
     val plantMaster = PlantMaster()
+    internal var titleList: List<String> ?= null
+    internal var adapter: ExpandableListAdapter ?= null
+    val expandedListView:ExpandableListView by lazy {findViewById(R.id.listview)}
     val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
     val buttonHarvest: Button by lazy { findViewById(R.id.sbor_button) }
     val year: TextView by lazy { findViewById(R.id.textView) }
@@ -43,6 +51,20 @@ class MainActivity : AppCompatActivity() {
         plantHistory.clear()
         return score
     }
+
+    val data: HashMap<String, List<String>>
+        get() {
+            val listData = HashMap<String, List<String>>()
+
+            val redmiMobiles = ArrayList<String>()
+            redmiMobiles.add("Адрес: $")
+            redmiMobiles.add("Возраст: $")
+            redmiMobiles.add("Телефон: $")
+
+            listData["Полная информация"] = redmiMobiles
+
+            return listData
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +81,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         builder.setPositiveButton("OK") { dialog, which ->
-            if (plantMaster.isPlanted==true){
+            if (plantMaster.isPlanted == true) {
                 Toast.makeText(applicationContext, "Поле уже засажено", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            } else {
                 plantMaster.isPlanted = true
                 plantMaster.isCanHarvest = false
-                draw(myCanvasView)
+                //draw(myCanvasView)
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
@@ -89,7 +110,21 @@ class MainActivity : AppCompatActivity() {
                 myCanvasView.invalidate()
             }
         }
-        draw(myCanvasView)
+
+        val expandableListView = findViewById<ExpandableListView>(R.id.listview)
+        if (expandableListView != null) {
+            val listData = data
+            titleList = ArrayList(listData.keys)
+            adapter = ProfileExpandableListAdapter(this, titleList as ArrayList<String>, listData)
+            expandableListView.setAdapter(adapter)
+            expandableListView.setOnGroupExpandListener { groupPosition ->  }
+
+            expandableListView.setOnGroupCollapseListener { groupPosition ->  }
+
+            expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+                false
+            }
+        }
     }
 
     private fun draw(myCanvasView: ImageView) {
@@ -104,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 var mColorMatrix = ColorMatrix(cmData)
                 var mfilter = ColorMatrixColorFilter(mColorMatrix)
-                myCanvasView.setColorFilter(mfilter)
+                myCanvasView.colorFilter = mfilter
                 lvlup()
                 myCanvasView.invalidate()
             }
