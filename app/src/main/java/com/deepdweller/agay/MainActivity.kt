@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
             Log.i("History", score.toString())
         }
-        plantHistory.clear()
         return Pair(score, progress++)
     }
 
