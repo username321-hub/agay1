@@ -6,7 +6,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.view.View.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -47,13 +47,10 @@ class MainActivity : AppCompatActivity() {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
-            Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
+            Log.i("History", score.toString())
         }
-
         plantHistory.clear()
-        val obj = Pair(score, progress++)
-
-        return obj
+        return Pair(score, progress++)
     }
 
     val data: HashMap<String, List<String>>
@@ -75,7 +72,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //progress = 0
         history.text = "0/$PLANS_COUNT_FOR_FINISH"
 
         progressBar.setProgress(progress, true)
@@ -105,8 +101,11 @@ class MainActivity : AppCompatActivity() {
                 progressBar.setProgress(calculateScore().second+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
-                    history.text = calculateScore().toString()
-                    show_result.text = calculateScore().toString()
+                    //history.text = calculateScore().toString()
+                    for (i in calculateScore().first){
+                        show_result.text = calculateScore().first.toString()
+                    }
+
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
@@ -143,21 +142,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun draw(myCanvasView: ImageView) {
         MainScope().launch {
-            for (i in 1..10) {
+            for (i in 1..9) {
+                buttonHarvest.alpha = 0.5F
+                buttonHarvest.isClickable = false
                 delay(500)
-                var cmData: FloatArray = floatArrayOf(
+                val cmData: FloatArray = floatArrayOf(
                     rline[0], rline[1], rline[2], rline[3], 0f,
                     gline[0], gline[1], gline[2], gline[3], 0f,
                     Data.bline[0], Data.bline[1], Data.bline[2], Data.bline[3], 0f,
                     lline[0], lline[1], lline[2], lline[3], 0f
                 )
-                var mColorMatrix = ColorMatrix(cmData)
-                var mfilter = ColorMatrixColorFilter(mColorMatrix)
+                val mColorMatrix = ColorMatrix(cmData)
+                val mfilter = ColorMatrixColorFilter(mColorMatrix)
                 myCanvasView.colorFilter = mfilter
                 lvlup()
                 myCanvasView.invalidate()
             }
-            plantMaster.isCanHarvest = true
+            buttonHarvest.alpha = 1F
+            buttonHarvest.isClickable = true
         }
     }
 
@@ -191,6 +193,8 @@ class MainActivity : AppCompatActivity() {
         rline[1] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f
+
+
     }
 
     fun dialogEvent(builder:AlertDialog.Builder, checkedItem1: Int){
