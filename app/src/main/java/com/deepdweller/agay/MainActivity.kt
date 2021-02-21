@@ -43,16 +43,17 @@ class MainActivity : AppCompatActivity() {
     val history: TextView by lazy { findViewById(R.id.history) }
     val show_result: TextView by lazy { findViewById(R.id.show_result_check) }
 
-    fun calculateScore(): Int {
+    fun calculateScore(): Pair<MutableList<Int>,Int> {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
             Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
-
         }
 
         plantHistory.clear()
-        return progress++
+        val obj = Pair(score, progress++)
+
+        return obj
     }
 
     val data: HashMap<String, List<String>>
@@ -74,7 +75,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progress = 0
+        //progress = 0
+        history.text = "0/$PLANS_COUNT_FOR_FINISH"
 
         progressBar.setProgress(progress, true)
         progressBar.max = PLANS_COUNT_FOR_FINISH
@@ -100,12 +102,13 @@ class MainActivity : AppCompatActivity() {
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
-                progressBar.setProgress(calculateScore()+1, true)
+                progressBar.setProgress(calculateScore().second+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
                     history.text = calculateScore().toString()
+                    show_result.text = calculateScore().toString()
                 }
-                history.text = counter.toString() + "/$PLANS_COUNT_FOR_FINISH"
+                history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
         }
 
