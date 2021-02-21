@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
-            Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
+            Log.i("History", score.toString())
         }
         plantHistory.clear()
         return Pair(score, progress++)
@@ -57,12 +57,12 @@ class MainActivity : AppCompatActivity() {
         get() {
             val listData = HashMap<String, List<String>>()
 
-            val redmiMobiles = ArrayList<String>()
-            redmiMobiles.add("Адрес: $")
-            redmiMobiles.add("Возраст: $")
-            redmiMobiles.add("Телефон: $")
+            val row = ArrayList<String>()
+            row.add("Адрес: $")
+            row.add("Возраст: $")
+            row.add("Телефон: $")
 
-            listData["Полная информация"] = redmiMobiles
+            listData["Полная информация"] = row
 
             return listData
         }
@@ -101,13 +101,8 @@ class MainActivity : AppCompatActivity() {
                 progressBar.setProgress(calculateScore().second+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
-//                    history.text = calculateScore().toString()
-                    show_result.text = calculateScore().first.toString()
-                    //history.text = calculateScore().toString()
-                    for (i in calculateScore().first){
-                        show_result.text = calculateScore().first.toString()
-                    }
 
+                    show_result.text = calculateScore().first.toString()
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
@@ -166,9 +161,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun toSolution(tool:String):Instrument{
-        val tool = Instrument(tool)
-        return tool
+    fun toSolution(tools:String):Instrument{
+        val _tools = Instrument(tools)
+        return _tools
     }
 /*    fun fixEvent(event:Event, tool:Instrument){
         var printvar = ""
@@ -207,7 +202,7 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton("OK") { dialog, which ->
             toRate(checkedItem)
         }
-        builder.setNegativeButton("Cancel", null)
+        builder.setNegativeButton("Отмена", null)
         counter=0
     }
 }
