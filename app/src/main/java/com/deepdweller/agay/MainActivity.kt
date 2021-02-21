@@ -6,7 +6,7 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View.*
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
-            Log.i("History", score.toString())
+            Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
         }
         plantHistory.clear()
         return Pair(score, progress++)
@@ -101,6 +101,8 @@ class MainActivity : AppCompatActivity() {
                 progressBar.setProgress(calculateScore().second+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
+//                    history.text = calculateScore().toString()
+                    show_result.text = calculateScore().first.toString()
                     //history.text = calculateScore().toString()
                     for (i in calculateScore().first){
                         show_result.text = calculateScore().first.toString()
@@ -158,13 +160,14 @@ class MainActivity : AppCompatActivity() {
                 lvlup()
                 myCanvasView.invalidate()
             }
+            plantMaster.isCanHarvest = true
             buttonHarvest.alpha = 1F
             buttonHarvest.isClickable = true
         }
     }
 
     fun toSolution(tool:String):Instrument{
-        var tool = Instrument(tool)
+        val tool = Instrument(tool)
         return tool
     }
 /*    fun fixEvent(event:Event, tool:Instrument){
@@ -193,8 +196,6 @@ class MainActivity : AppCompatActivity() {
         rline[1] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f
-
-
     }
 
     fun dialogEvent(builder:AlertDialog.Builder, checkedItem1: Int){
