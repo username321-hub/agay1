@@ -47,10 +47,11 @@ class MainActivity : AppCompatActivity() {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
-            Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
+            Log.i(
+                "History",
+                plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString()
+            )
         }
-
-        plantHistory.clear()
         val obj = Pair(score, progress++)
 
         return obj
@@ -105,8 +106,8 @@ class MainActivity : AppCompatActivity() {
                 progressBar.setProgress(calculateScore().second+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
-                    history.text = calculateScore().toString()
-                    show_result.text = calculateScore().toString()
+//                    history.text = calculateScore().toString()
+                    show_result.text = calculateScore().first.toString()
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
@@ -133,7 +134,6 @@ class MainActivity : AppCompatActivity() {
             adapter = ExpandableListAdapter(this, titleList as ArrayList<String>, listData)
             expandableListView.setAdapter(adapter)
             expandableListView.setOnGroupExpandListener { groupPosition ->  }
-
             expandableListView.setOnGroupCollapseListener { groupPosition ->  }
             expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
                 false
