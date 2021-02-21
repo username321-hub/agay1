@@ -1,4 +1,4 @@
-package com.deepdweller.agay.adapter
+package com.deepdweller.agay
 
 import android.content.Context
 import android.graphics.Typeface
@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.deepdweller.agay.R
 import java.util.*
 
-class ProfileExpandableListAdapter internal constructor
+class ExpandableListAdapter internal constructor
     (
     private val context: Context,
     private val titleList: List<String>,

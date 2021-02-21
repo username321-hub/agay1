@@ -8,74 +8,84 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:src="@drawable/pole"
-        android:scaleType="centerCrop"
         android:id="@+id/myView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pole"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/progress_bar"
+        android:max="6"
+        android:progress="2"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ExpandableListView
-        android:background="@color/white"
-        android:orientation="horizontal"
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_button"
-        android:layout_width="500px"
+        android:layout_width="140dp"
         android:layout_height="65dp"
-        android:layout_marginLeft="10dp"
-        android:text="plant"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:text="@string/to_plant"
         android:textColor="@color/white"
         app:backgroundTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myView"
-        app:layout_constraintVertical_bias="0.975" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/sbor_button"
-        android:layout_width="500px"
+        android:layout_width="140dp"
         android:layout_height="65dp"
-        android:layout_marginRight="10dp"
-        android:text="sbor"
+        android:text="@string/harvest"
         android:textColor="@color/white"
         app:backgroundTint="#000000"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myView"
-        app:layout_constraintVertical_bias="0.975" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="184dp"
-        android:layout_marginLeft="184dp"
-        android:layout_marginTop="356dp"
-        android:background="#000000"
-        android:text="TextView"
-        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
+        android:background="@color/black"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/myView" />
+        app:layout_constraintTop_toBottomOf="@+id/history" />
 
     <TextView
         android:id="@+id/history"
-        android:layout_width="247dp"
-        android:layout_height="139dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="136dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="140dp"
         android:background="#000000"
         android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myView" />
 

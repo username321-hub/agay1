@@ -1,19 +1,17 @@
 package com.deepdweller.agay
 
-import android.content.Context
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.LayoutInflater
-import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
-import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatDrawableManager.get
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.deepdweller.agay.Data.counter
 import com.deepdweller.agay.Data.cultures
 import com.deepdweller.agay.Data.gline
@@ -26,18 +24,20 @@ import com.deepdweller.agay.Eventik.instruments
 import com.deepdweller.agay.Eventik.instrumentsString
 import com.deepdweller.agay.Eventik.solutions
 import com.deepdweller.agay.History.plantHistory
-import com.deepdweller.agay.adapter.ProfileExpandableListAdapter
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     val PLANS_COUNT_FOR_FINISH = 2
-
     val plantMaster = PlantMaster()
+
     internal var titleList: List<String> ?= null
     internal var adapter: ExpandableListAdapter ?= null
-    val expandedListView:ExpandableListView by lazy {findViewById(R.id.listview)}
+    val expandedListView: ExpandableListView by lazy {findViewById(R.id.listview)}
+
     val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
     val buttonHarvest: Button by lazy { findViewById(R.id.sbor_button) }
     val year: TextView by lazy { findViewById(R.id.textView) }
@@ -66,12 +66,18 @@ class MainActivity : AppCompatActivity() {
             return listData
         }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val progressBar : ProgressBar = findViewById(R.id.progress_bar)
+
+        progressBar.setProgress(2, true)
+        progressBar.progressDrawable.setColorFilter(Color.rgb(0, 191, 50), android.graphics.PorterDuff.Mode.SRC_IN)
+
         val myCanvasView: ImageView = findViewById(R.id.myView)
         myCanvasView.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN
-
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Выберите растение")
@@ -115,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         if (expandableListView != null) {
             val listData = data
             titleList = ArrayList(listData.keys)
-            adapter = ProfileExpandableListAdapter(this, titleList as ArrayList<String>, listData)
+            adapter = ExpandableListAdapter(this, titleList as ArrayList<String>, listData)
             expandableListView.setAdapter(adapter)
             expandableListView.setOnGroupExpandListener { groupPosition ->  }
 

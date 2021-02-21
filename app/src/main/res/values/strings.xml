@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">agay</string>
+    <string name="harvest">Собрать урожай</string>
+    <string name="to_plant">Посадить</string>
 </resources>

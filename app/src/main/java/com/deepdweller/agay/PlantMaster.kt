@@ -20,8 +20,6 @@ class PlantMaster {
         else
             return  0
     }
-
-
 }
 
 enum class Rate{
