@@ -3,10 +3,9 @@ package com.deepdweller.agay
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -24,15 +23,16 @@ import com.deepdweller.agay.Eventik.instruments
 import com.deepdweller.agay.Eventik.instrumentsString
 import com.deepdweller.agay.Eventik.solutions
 import com.deepdweller.agay.History.plantHistory
-import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+var progress : Int = 0
+
 class MainActivity : AppCompatActivity() {
-    val PLANS_COUNT_FOR_FINISH = 2
+    val PLANS_COUNT_FOR_FINISH = 3
     val plantMaster = PlantMaster()
+    val progressBar : ProgressBar by lazy {findViewById(R.id.progress_bar) }
 
     internal var titleList: List<String> ?= null
     internal var adapter: ExpandableListAdapter ?= null
@@ -40,16 +40,19 @@ class MainActivity : AppCompatActivity() {
 
     val buttonPlant: Button by lazy { findViewById(R.id.add_button) }
     val buttonHarvest: Button by lazy { findViewById(R.id.sbor_button) }
-    val year: TextView by lazy { findViewById(R.id.textView) }
     val history: TextView by lazy { findViewById(R.id.history) }
+    val show_result: TextView by lazy { findViewById(R.id.show_result_check) }
 
-    fun calculateScore(): MutableList<Int> {
+    fun calculateScore(): Int {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
+            Log.i("History", plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]).toString())
+
         }
+
         plantHistory.clear()
-        return score
+        return progress++
     }
 
     val data: HashMap<String, List<String>>
@@ -71,9 +74,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val progressBar : ProgressBar = findViewById(R.id.progress_bar)
+        progress = 0
 
-        progressBar.setProgress(2, true)
+        progressBar.setProgress(progress, true)
+        progressBar.max = PLANS_COUNT_FOR_FINISH
         progressBar.progressDrawable.setColorFilter(Color.rgb(0, 191, 50), android.graphics.PorterDuff.Mode.SRC_IN)
 
         val myCanvasView: ImageView = findViewById(R.id.myView)
@@ -96,14 +100,16 @@ class MainActivity : AppCompatActivity() {
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
+                progressBar.setProgress(calculateScore()+1, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
                     dialogEvent(builder, checkedItem)
                     history.text = calculateScore().toString()
                 }
-                year.text = counter.toString() + "/$PLANS_COUNT_FOR_FINISH"
+                history.text = counter.toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
         }
-        builder.setNegativeButton("Cancel", null)
+
+        builder.setNegativeButton("Отмена", null)
 
         buttonPlant.setOnClickListener {
             val dialog = builder.create()
@@ -126,7 +132,6 @@ class MainActivity : AppCompatActivity() {
             expandableListView.setOnGroupExpandListener { groupPosition ->  }
 
             expandableListView.setOnGroupCollapseListener { groupPosition ->  }
-
             expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
                 false
             }
@@ -178,11 +183,13 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(applicationContext, rate, Toast.LENGTH_SHORT).show()
     }
+
     fun lvlup() {
         rline[1] += 0.05f
         gline[1] += 0.05f
         lline[3] += 0.05f
     }
+
     fun dialogEvent(builder:AlertDialog.Builder, checkedItem1: Int){
         var checkedItem = checkedItem1
         builder.setTitle(event.eventText+" Выбери инструмент!")
