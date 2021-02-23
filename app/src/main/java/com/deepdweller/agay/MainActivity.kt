@@ -6,6 +6,8 @@ import android.graphics.ColorMatrixColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -102,6 +104,8 @@ class MainActivity : AppCompatActivity() {
                     dialogEvent(builder, checkedItem)
 
                     show_result.text = calculateScore().first.toString()
+                    progress = 0
+                    counter = 0
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
@@ -115,14 +119,19 @@ class MainActivity : AppCompatActivity() {
         }
         buttonHarvest.setOnClickListener {
             if (plantMaster.isCanHarvest) {
+
+                buttonHarvest.alpha = 0.5F
+                buttonHarvest.isClickable = false
+
                 plantMaster.isPlanted = false
                 initFilter()
                 myCanvasView.invalidate()
             }
         }
 
+
         val expandableListView = findViewById<ExpandableListView>(R.id.listview)
-        if (expandableListView != null) {
+        expandedListView.let{
             val listData = data
             titleList = ArrayList(listData.keys)
             adapter = ExpandableListAdapter(this, titleList as ArrayList<String>, listData)
