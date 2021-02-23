@@ -15,10 +15,10 @@ class PlantMaster {
 
     fun howIsGoodChoice(prev : Culture, next : Culture) : Int{
         val isGoodNext = positiveMap[prev]?.contains(next) ?: false
-        if (isGoodNext)
-            return  1
+        return if (isGoodNext)
+            1
         else
-            return  0
+            0
     }
 }
 

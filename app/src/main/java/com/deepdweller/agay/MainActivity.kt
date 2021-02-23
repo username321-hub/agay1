@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 var progress : Int = 0
 
 class MainActivity : AppCompatActivity() {
-    val PLANS_COUNT_FOR_FINISH = 3
+    val PLANS_COUNT_FOR_FINISH = 4
     val plantMaster = PlantMaster()
     val progressBar : ProgressBar by lazy {findViewById(R.id.progress_bar) }
 
@@ -45,13 +45,13 @@ class MainActivity : AppCompatActivity() {
     val history: TextView by lazy { findViewById(R.id.history) }
     val show_result: TextView by lazy { findViewById(R.id.show_result_check) }
 
-    fun calculateScore(): Pair<MutableList<Int>,Int> {
+    fun calculateScore(): MutableList<Int> {
         val score = mutableListOf<Int>()
         for (i in 0..plantHistory.size - 2) {
             score.add(plantMaster.howIsGoodChoice(plantHistory[i], plantHistory[i + 1]))
             Log.i("History", score.toString())
         }
-        return Pair(score, progress++)
+        return score
     }
 
     val data: HashMap<String, List<String>>
@@ -99,18 +99,26 @@ class MainActivity : AppCompatActivity() {
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
-                progressBar.setProgress(calculateScore().second+1, true)
-                if (counter == PLANS_COUNT_FOR_FINISH) {
-                    dialogEvent(builder, checkedItem)
+                Toast.makeText(this, "${plantMaster.howIsGoodChoice(cultures[checkedItem], cultures[checkedItem+1])}", Toast.LENGTH_SHORT).show()
 
-                    show_result.text = calculateScore().first.toString()
-                    progress = 0
-                    counter = 0
+                progressBar.setProgress(counter, true)
+                if (counter == PLANS_COUNT_FOR_FINISH) {
+                    //dialogEvent(builder, checkedItem)
+                    show_result.text = calculateScore().toString()
+                    restartGame()
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
+            /*for (i in 0..plantHistory.size - 2){
+                if (calculateScore().isNotEmpty()){
+                    if (calculateScore()[i] == 1){
+                        Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Не верно", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }*/
         }
-
         builder.setNegativeButton("Отмена", null)
 
         buttonPlant.setOnClickListener {
@@ -129,7 +137,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         val expandableListView = findViewById<ExpandableListView>(R.id.listview)
         expandedListView.let{
             val listData = data
@@ -145,11 +152,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun restartGame() {
+        plantHistory.clear()
+        counter = 0
+    }
+
     private fun draw(myCanvasView: ImageView) {
         MainScope().launch {
-            for (i in 1..9) {
+            for (i in 1..6) {
                 buttonHarvest.alpha = 0.5F
                 buttonHarvest.isClickable = false
+                buttonHarvest.text = "Созревание..."
                 delay(500)
                 val cmData: FloatArray = floatArrayOf(
                     rline[0], rline[1], rline[2], rline[3], 0f,
@@ -166,6 +179,7 @@ class MainActivity : AppCompatActivity() {
             plantMaster.isCanHarvest = true
             buttonHarvest.alpha = 1F
             buttonHarvest.isClickable = true
+            buttonHarvest.text = "Собрать урожай"
         }
     }
 
