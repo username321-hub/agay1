@@ -20,7 +20,7 @@ object Data {
         bline = floatArrayOf(0f, 0f, 0f, 0f)
         lline = floatArrayOf(0f, 0f, 0f, 0.4f)
     }
-
+        
     val cultures: List<Culture> = listOf(
         Culture("Рожь"),
         Culture("Овёс"),

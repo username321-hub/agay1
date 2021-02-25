@@ -1,5 +1,7 @@
 package com.deepdweller.agay.fragment
 
+import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
@@ -46,10 +48,26 @@ class GameFragment : Fragment() {
 
         history.text = "0/$PLANS_COUNT_FOR_FINISH"
 
-        progressBar.setProgress(progress, true)
-        progressBar.max = PLANS_COUNT_FOR_FINISH
-        progressBar.progressDrawable.setColorFilter(Color.rgb(0, 191, 50), android.graphics.PorterDuff.Mode.SRC_IN)
+        //progressBar.setProgress(progress, true)
+        fun progress() {
+            val get_progressBar = progressBar.getProgress()
+            var schet_progressa_po_culturam = Data.counter
+            var schetchik_progressa = 0
+            val currentprogress = 1000
 
+            progressBar.max = 1000
+            while (schet_progressa_po_culturam >= schetchik_progressa ){
+                ObjectAnimator.ofInt(progressBar,"progress",currentprogress)
+                    .setDuration(4550)
+                    .start()
+                schetchik_progressa++
+
+            }
+        }
+
+        //progressBar.max = PLANS_COUNT_FOR_FINISH
+        //progressBar.progressDrawable.setColorFilter(Color.rgb(0, 191, 50), android.graphics.PorterDuff.Mode.SRC_IN)
+        progressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(0, 191, 50)))
         val myCanvasView: ImageView = view.findViewById(R.id.myView)
         myCanvasView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
@@ -65,14 +83,19 @@ class GameFragment : Fragment() {
             dialog.show()
         }
         buttonHarvest.setOnClickListener {
+
+
+
             if (plantMaster.isCanHarvest) {
 
                 buttonHarvest.alpha = 0.5F
                 buttonHarvest.isClickable = false
 
                 plantMaster.isPlanted = false
+
                 Data.initFilter()
                 myCanvasView.invalidate()
+                progressBar.setProgress(0)
             }
         }
 
@@ -95,6 +118,7 @@ class GameFragment : Fragment() {
                     restartGame()
                 }
                 history.text = (Data.counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
+                progress()
             }
         }
         builderPlant.setNegativeButton("Отмена", null)
@@ -112,11 +136,13 @@ class GameFragment : Fragment() {
             }
         }
         return view
-    }
 
+
+
+    }
     private fun draw(myCanvasView: ImageView, buttonHarvest: Button) {
         MainScope().launch {
-            for (i in 1..6) {
+            for (i in 1..9) {
                 buttonHarvest.alpha = 0.5F
                 buttonHarvest.isClickable = false
                 buttonHarvest.text = "Созревание..."
@@ -132,6 +158,7 @@ class GameFragment : Fragment() {
                 myCanvasView.colorFilter = mfilter
                 lvlup()
                 myCanvasView.invalidate()
+
             }
             plantMaster.isCanHarvest = true
             buttonHarvest.alpha = 1F
@@ -145,6 +172,7 @@ class GameFragment : Fragment() {
         Data.counter = 0
         view?.findNavController()?.navigate(R.id.action_gameFragment_to_resultFragment)
     }
+
 
     fun calculateScore(): MutableList<Int> {
         val score = mutableListOf<Int>()
