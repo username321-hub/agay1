@@ -1,6 +1,6 @@
 package com.deepdweller.agay
 
-class Culture(val name: String){}
+
 
 class PlantMaster {
     var isPlanted = false

@@ -26,7 +26,9 @@ object Data {
         Culture("Овёс"),
         Culture("Пшеница"),
         Culture("Гречиха"),
-        Culture("Просо")
+        Culture("Просо"),
+        Culture("Подсолнечник"),
+        Culture("Картофель")
     )
 
 }
@@ -54,21 +56,21 @@ object History {
 }
 object Eventik{
     val solutions:Array<Instrument> = arrayOf(
-        Instrument("Плуг"),
-        Instrument("Культиватор"),
-        Instrument("Катки")
+        Instrument("Комбайн")
         )
     var instruments:MutableList<Instrument> = mutableListOf(
         Instrument("Плуг"),
         Instrument("Борона"),
         Instrument("Лущильник"),
+        Instrument("Комбайн"),
         Instrument("Культиватор"),
-        Instrument("Катки")
+        Instrument("Катки"),
     )
     var instrumentsString:Array<String> = arrayOf(
         "Плуг",
         "Борона",
         "Лущильник",
+        "Комбайн",
         "Культиватор",
         "Катки"
     )

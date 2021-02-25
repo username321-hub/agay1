@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                 plantHistory.add(cultures[checkedItem])
                 counter++
 
-                Toast.makeText(this, "${plantMaster.howIsGoodChoice(cultures[checkedItem], cultures[checkedItem+1])}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "${plantMaster.howIsGoodChoice(cultures[checkedItem], cultures[checkedItem+1])}", Toast.LENGTH_SHORT).show()
 
                 progressBar.setProgress(counter, true)
                 if (counter == PLANS_COUNT_FOR_FINISH) {
@@ -109,15 +109,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 history.text = (counter).toString() + "/$PLANS_COUNT_FOR_FINISH"
             }
-            /*for (i in 0..plantHistory.size - 2){
-                if (calculateScore().isNotEmpty()){
-                    if (calculateScore()[i] == 1){
-                        Toast.makeText(this, "Верно", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this, "Не верно", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }*/
         }
         builder.setNegativeButton("Отмена", null)
 
@@ -144,7 +135,6 @@ class MainActivity : AppCompatActivity() {
             adapter = ExpandableListAdapter(this, titleList as ArrayList<String>, listData)
             expandableListView.setAdapter(adapter)
             expandableListView.setOnGroupExpandListener { groupPosition ->  }
-
             expandableListView.setOnGroupCollapseListener { groupPosition ->  }
             expandableListView.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
                 false
@@ -153,6 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun restartGame() {
+
         plantHistory.clear()
         counter = 0
     }
@@ -226,5 +217,8 @@ class MainActivity : AppCompatActivity() {
         }
         builder.setNegativeButton("Отмена", null)
         counter=0
+    }
+    fun dialogResult(){
+        //plantMaster.howIsGoodChoice(cultures[checkedItem], cultures[checkedItem+1])
     }
 }
