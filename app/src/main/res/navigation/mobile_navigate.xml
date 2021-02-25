@@ -19,4 +19,13 @@
         android:name="com.deepdweller.agay.fragment.ResultFragment"
         android:label="@string/result_fragment"
         tools:layout="@layout/fragment_result" />
+    <fragment
+        android:id="@+id/manualFragment"
+        android:name="com.deepdweller.agay.fragment.ManualFragment"
+        android:label="ManualFragment" />
+    <action
+        android:id="@+id/action_global_manualFragment"
+        app:destination="@id/manualFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right" />
 </navigation>

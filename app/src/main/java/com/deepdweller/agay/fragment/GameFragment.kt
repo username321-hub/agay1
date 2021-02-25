@@ -199,5 +199,4 @@ class GameFragment : Fragment() {
 
             return listData
         }
-
 }
