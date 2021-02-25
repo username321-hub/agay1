@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.findNavController
 import com.deepdweller.agay.*
 import com.deepdweller.agay.ExpandableListAdapter
 import kotlinx.coroutines.MainScope
@@ -142,6 +143,7 @@ class GameFragment : Fragment() {
     private fun restartGame() {
         History.plantHistory.clear()
         Data.counter = 0
+        view?.findNavController()?.navigate(R.id.action_gameFragment_to_resultFragment)
     }
 
     fun calculateScore(): MutableList<Int> {

@@ -16,8 +16,6 @@ class ResultFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_result, container, false)
 
-        val textView = view.findViewById<TextView>(R.id.text3)
-
         return view
     }
 
