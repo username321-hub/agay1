@@ -93,8 +93,10 @@ class GameFragment : Fragment() {
 
                 plantMaster.isPlanted = false
 
-                Data.initFilter()
-                myCanvasView.invalidate()
+               Data.initFilter()
+               myCanvasView.invalidate()
+                   //вот этот чертов сброс
+                myCanvasView.setColorFilter(null)
                 progressBar.setProgress(0)
             }
         }
