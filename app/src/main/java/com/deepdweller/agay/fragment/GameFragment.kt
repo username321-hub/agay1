@@ -13,10 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.Toast.LENGTH_SHORT
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.deepdweller.agay.*
+import com.deepdweller.agay.Data.cultures
+import com.deepdweller.agay.Eventik.instrumentsString
 import com.deepdweller.agay.ExpandableListAdapter
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -27,6 +30,7 @@ class GameFragment : Fragment() {
 
     val PLANS_COUNT_FOR_FINISH = 4
     val plantMaster = PlantMaster()
+    val instrumentMaster = InstrumentMaster()
 
     internal var titleList: List<String> ?= null
     internal var adapter: ExpandableListAdapter?= null
@@ -45,6 +49,7 @@ class GameFragment : Fragment() {
         val buttonHarvest: Button = view.findViewById(R.id.sbor_button)
         val history: TextView = view.findViewById(R.id.history)
         val show_result: TextView = view.findViewById(R.id.show_result_check)
+        val ButtonInstrument:Button = view.findViewById(R.id.TestInstrumentButton)
 
         history.text = "0/$PLANS_COUNT_FOR_FINISH"
 
@@ -73,7 +78,7 @@ class GameFragment : Fragment() {
 
         val builderPlant = AlertDialog.Builder(requireContext())
         builderPlant.setTitle("Выберите растение")
-        var checkedItem = 1
+        var checkedItem = 0
         builderPlant.setSingleChoiceItems(Data.plants, checkedItem) { dialog, which ->
             checkedItem = which
         }
@@ -83,9 +88,6 @@ class GameFragment : Fragment() {
             dialog.show()
         }
         buttonHarvest.setOnClickListener {
-
-
-
             if (plantMaster.isCanHarvest) {
 
                 buttonHarvest.alpha = 0.5F
@@ -94,10 +96,34 @@ class GameFragment : Fragment() {
                 plantMaster.isPlanted = false
 
                Data.initFilter()
-               myCanvasView.invalidate()
-                   //вот этот чертов сброс
-                myCanvasView.setColorFilter(null)
+                val cmData: FloatArray = floatArrayOf(
+                    Data.rline[0], Data.rline[1], Data.rline[2], Data.rline[3], 0f,
+                    Data.gline[0], Data.gline[1], Data.gline[2], Data.gline[3], 0f,
+                    Data.bline[0], Data.bline[1], Data.bline[2], Data.bline[3], 0f,
+                    Data.lline[0], Data.lline[1], Data.lline[2], Data.lline[3], 0f
+                )
+                myCanvasView.setColorFilter(ColorMatrixColorFilter(cmData))
+                myCanvasView.invalidate()
                 progressBar.setProgress(0)
+            }
+        }
+        ButtonInstrument.setOnClickListener {
+            if (instrumentMaster.instrumentCanBeUsed){
+                val builderInstrument = AlertDialog.Builder(requireContext())
+                builderInstrument.setTitle("Выберите инструмент к растению "+cultures[checkedItem].name)
+                var checkedItemInstrument = 1
+                builderInstrument.setSingleChoiceItems(instrumentsString, checkedItemInstrument) { dialog, which ->
+                    checkedItemInstrument = which }
+                builderInstrument.setPositiveButton("OK") { dialogInstruments, which ->
+                    Toast.makeText(requireContext(), instrumentMaster.InstrumentUse(harvesters[checkedItemInstrument], cultures[checkedItem]), LENGTH_SHORT).show()
+                    instrumentMaster.instrumentCanBeUsed=false
+                }
+                builderInstrument.setNegativeButton("Отмена", null)
+                val dialogInstrument = builderInstrument.create()
+                dialogInstrument.show()
+            }
+            else{
+                Toast.makeText(requireContext(), "Инструмент уже был использован", LENGTH_SHORT).show()
             }
         }
 
@@ -196,9 +222,9 @@ class GameFragment : Fragment() {
     }
 
     fun lvlup() {
-        Data.rline[1] += 0.05f
-        Data.gline[1] += 0.05f
-        Data.lline[3] += 0.05f
+        Data.rline[1] += 0.15f
+        Data.gline[1] += 0.08f
+        Data.lline[3] += 0.08f
     }
 
     fun dialogEvent(builder:AlertDialog.Builder, checkedItem1: Int){

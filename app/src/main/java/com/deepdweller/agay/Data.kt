@@ -16,19 +16,20 @@ object Data {
 
     fun initFilter() {
         rline = floatArrayOf(0f, 0f, 0f, 0f)
-        gline = floatArrayOf(0f, 0.4f, 0f, 0f)
+        gline = floatArrayOf(0f, 0.8f, 0f, 0f)
         bline = floatArrayOf(0f, 0f, 0f, 0f)
-        lline = floatArrayOf(0f, 0f, 0f, 0.4f)
+        lline = floatArrayOf(0f, 0f, 0f, 0.9f)
     }
-        
+
     val cultures: List<Culture> = listOf(
-        Culture("Рожь"),
-        Culture("Овёс"),
-        Culture("Пшеница"),
-        Culture("Гречиха"),
-        Culture("Просо"),
-        Culture("Подсолнечник"),
-        Culture("Картофель")
+        Culture("Рожь", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Овёс", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Пшеница", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Гречиха", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Просо", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Подсолнечник", "Озимые", "Зерновые", "Многолетние"),
+        Culture("Горох", "Озимые", "Зернобобовые", "Многолетние"),
+        Culture("Картофель", "Озимые", "КоромовыеКорнеплоды", "Многолетние")
     )
 
 }
@@ -55,23 +56,23 @@ object History {
     var plantHistory: MutableList<Culture> = mutableListOf()
 }
 object Eventik{
-    val solutions:Array<Instrument> = arrayOf(
-        Instrument("Комбайн")
+    val solutions:Array<Harvesters> = arrayOf(
+        Harvesters("Комбайн")
         )
-    var instruments:MutableList<Instrument> = mutableListOf(
-        Instrument("Плуг"),
-        Instrument("Борона"),
-        Instrument("Лущильник"),
-        Instrument("Комбайн"),
-        Instrument("Культиватор"),
-        Instrument("Катки"),
+    var instruments:MutableList<Harvesters> = mutableListOf(
+        Harvesters("Плуг"),
+        Harvesters("Борона"),
+        Harvesters("Лущильник"),
+        Harvesters("Комбайн"),
+        Harvesters("Культиватор"),
+        Harvesters("Катки"),
     )
     var instrumentsString:Array<String> = arrayOf(
         "Плуг",
         "Борона",
         "Лущильник",
         "Комбайн",
-        "Культиватор",
+        "что-то против соринков",
         "Катки"
     )
     val event = Event("Сорняки!", solutions)
