@@ -84,8 +84,6 @@ class GameFragment : Fragment() {
         }
         buttonHarvest.setOnClickListener {
 
-
-
             if (plantMaster.isCanHarvest) {
 
                 buttonHarvest.alpha = 0.5F

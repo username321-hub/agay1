@@ -20,12 +20,19 @@
         android:label="@string/result_fragment"
         tools:layout="@layout/fragment_result" />
     <fragment
+        android:id="@+id/webFragment"
+        android:name="com.deepdweller.agay.fragment.WebFragment"
+        android:label="Web" />
+    <fragment
         android:id="@+id/manualFragment"
         android:name="com.deepdweller.agay.fragment.ManualFragment"
-        android:label="ManualFragment" />
-    <action
-        android:id="@+id/action_global_manualFragment"
-        app:destination="@id/manualFragment"
-        app:enterAnim="@android:anim/slide_in_left"
-        app:exitAnim="@android:anim/slide_out_right" />
+        android:label="@string/manual_fragment"
+        tools:layout="@layout/fragment_manual" >
+        <action
+            android:id="@+id/action_manualFragment_to_webFragment"
+            app:destination="@id/webFragment" />
+        <argument
+            android:name="url"
+            android:defaultValue="file:///android_asset/technic.html" />
+    </fragment>
 </navigation>
